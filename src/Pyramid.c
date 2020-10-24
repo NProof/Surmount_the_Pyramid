@@ -3,29 +3,6 @@
 #include <stdlib.h>
 #include "../header/Pyramid.h"
 
-int printMap(struct Pyramid * pyramid, int n) {
-    int l = 0, k = 0, j = 0;
-    int i = 0;
-    while (n-2*l>0) {
-        putchar(pyramid->mapOfPyramid[l][k+l][j+l]);
-        ++j;
-        if (j>=n-2*l) {
-            j = 0;
-            ++k;
-            if (k>=n-2*l) {
-                k = 0;
-                ++l;
-                if(n-2*l>0)
-                    putchar('\n');
-            }
-            putchar('\n');
-        }
-        else putchar(' ');
-        ++i;
-    }
-    return i;
-}
-
 int readData(struct Pyramid * pyramid, char * fileName) {
     FILE * fp;
     char line[256];
@@ -82,4 +59,27 @@ int readData(struct Pyramid * pyramid, char * fileName) {
 
     fclose(fp);
     return n;
+}
+
+int printMap(struct Pyramid * pyramid, int n) {
+    int l = 0, k = 0, j = 0;
+    int i = 0;
+    while (n-2*l>0) {
+        putchar(pyramid->mapOfPyramid[l][k+l][j+l]);
+        ++j;
+        if (j>=n-2*l) {
+            j = 0;
+            ++k;
+            if (k>=n-2*l) {
+                k = 0;
+                ++l;
+                if(n-2*l>0)
+                    putchar('\n');
+            }
+            putchar('\n');
+        }
+        else putchar(' ');
+        ++i;
+    }
+    return i;
 }
