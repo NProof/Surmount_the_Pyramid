@@ -48,7 +48,6 @@ void readData(struct Pyramid * pyramid, FILE * fp) {
             }
         }
     }
-
     return ;
 }
 
