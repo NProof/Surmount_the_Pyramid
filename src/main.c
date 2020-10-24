@@ -6,17 +6,19 @@
 
 int main(int argc, char ** argv) {
     FILE * fp;
+    struct Pyramid pyramid;
     for (int i=1; i<argc; ++i) {
         fp = fopen(argv[i], "r");
         if (fp == NULL) {
             fprintf(stderr, "file open error\n");
             exit(EXIT_FAILURE);
         }
+
         printf("======\n%s\n\n", argv[i]);
-        struct Pyramid pyramid;
 
         readData(&pyramid, fp);
         fclose(fp);
+
         printMap(&pyramid);
     }
 }
