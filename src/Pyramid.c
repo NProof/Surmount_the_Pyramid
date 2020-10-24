@@ -3,15 +3,8 @@
 #include <stdlib.h>
 #include "../header/Pyramid.h"
 
-int readData(struct Pyramid * pyramid, char * fileName) {
-    FILE * fp;
+void readData(struct Pyramid * pyramid, FILE * fp) {
     char line[256];
-
-    fp = fopen(fileName, "r");
-    if (fp == NULL) {
-        fprintf(stderr, "file open error\n");
-        exit(EXIT_FAILURE);
-    }
 
     int level = 0;
     int j = 0;
@@ -56,8 +49,7 @@ int readData(struct Pyramid * pyramid, char * fileName) {
         }
     }
 
-    fclose(fp);
-    return pyramid->n;
+    return ;
 }
 
 int printMap(struct Pyramid * pyramid) {

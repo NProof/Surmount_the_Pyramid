@@ -6,7 +6,7 @@ struct Pyramid {
     char mapOfPyramid[15][15][15];
 };
 
-int readData(struct Pyramid *, char *);
+void readData(struct Pyramid *, FILE *);
 int printMap(struct Pyramid *);
 
 #endif // PYRAMID_H_INCLUDED
