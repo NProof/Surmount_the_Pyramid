@@ -2,26 +2,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 
-char mapOfPyramid[15][15][15]={0};
+struct Pyramid {
+    char mapOfPyramid[15][15][15];
+};
 
-int readData(char *);
-int printMap(int);
+int readData(struct Pyramid *, char *);
+int printMap(struct Pyramid *, int);
 
 int main(int argc, char ** argv) {
     for (int i=1; i<argc; ++i) {
         printf("======\n%s\n\n", argv[i]);
-        int n = readData(argv[i]);
-        int nodes = printMap(n);
+        struct Pyramid pyramid;
+
+        int n = readData(&pyramid, argv[i]);
+        int nodes = printMap(&pyramid, n);
     }
 }
 
-int printMap(int n) {
+int printMap(struct Pyramid * pyramid, int n) {
     int l = 0, k = 0, j = 0;
     int i = 0;
     while (n-2*l>0) {
-        putchar(mapOfPyramid[l][k+l][j+l]);
+        putchar(pyramid->mapOfPyramid[l][k+l][j+l]);
         ++j;
         if (j>=n-2*l) {
             j = 0;
@@ -40,7 +43,7 @@ int printMap(int n) {
     return i;
 }
 
-int readData(char * fileName) {
+int readData(struct Pyramid * pyramid, char * fileName) {
     FILE * fp;
     char line[256];
 
@@ -62,7 +65,7 @@ int readData(char * fileName) {
         char tmp[15]={'\0'};
         while(token != NULL) {
             strcpy(tmp+i, token);
-            mapOfPyramid[level][j+level][i+level] = tmp[i];
+            pyramid->mapOfPyramid[level][j+level][i+level] = tmp[i];
             token = strtok(NULL, " \t\n");
             ++i;
         }
@@ -80,7 +83,7 @@ int readData(char * fileName) {
         while(token != NULL) {
 //            printf("%d, %d, %d)\n", level, j, i);
             strcpy(tmp+i, token);
-            mapOfPyramid[level][j+level][i+level] = tmp[i];
+            pyramid->mapOfPyramid[level][j+level][i+level] = tmp[i];
             token = strtok(NULL, " \t\n");
             ++i;
             if (i>=n-2*level) {
