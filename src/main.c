@@ -10,6 +10,6 @@ int main(int argc, char ** argv) {
         struct Pyramid pyramid;
 
         int n = readData(&pyramid, argv[i]);
-        int nodes = printMap(&pyramid, n);
+        int nodes = printMap(&pyramid);
     }
 }

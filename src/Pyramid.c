@@ -16,7 +16,6 @@ int readData(struct Pyramid * pyramid, char * fileName) {
     int level = 0;
     int j = 0;
     int i = 0;
-    int n = 0;
 
     if (fgets(line, sizeof(line), fp)!=NULL) {
         char linetmp[50];
@@ -30,8 +29,8 @@ int readData(struct Pyramid * pyramid, char * fileName) {
             ++i;
         }
     }
-    n = i;
-    if (n==0)
+    pyramid->n = i;
+    if (pyramid->n==0)
         exit(EXIT_FAILURE);
     i = 0;
     ++j;
@@ -46,10 +45,10 @@ int readData(struct Pyramid * pyramid, char * fileName) {
             pyramid->mapOfPyramid[level][j+level][i+level] = tmp[i];
             token = strtok(NULL, " \t\n");
             ++i;
-            if (i>=n-2*level) {
+            if (i>=pyramid->n-2*level) {
                 i = 0;
                 ++j;
-                if (j>=n-2*level) {
+                if (j>=pyramid->n-2*level) {
                     j = 0;
                     ++level;
                 }
@@ -58,12 +57,12 @@ int readData(struct Pyramid * pyramid, char * fileName) {
     }
 
     fclose(fp);
-    return n;
+    return pyramid->n;
 }
 
-int printMap(struct Pyramid * pyramid, int n) {
-    int l = 0, k = 0, j = 0;
-    int i = 0;
+int printMap(struct Pyramid * pyramid) {
+    int n = pyramid->n;
+    int l = 0, k = 0, j = 0, i = 0;
     while (n-2*l>0) {
         putchar(pyramid->mapOfPyramid[l][k+l][j+l]);
         ++j;
