@@ -52,9 +52,9 @@ void readData(struct Pyramid * pyramid, FILE * fp) {
     return ;
 }
 
-int printMap(struct Pyramid * pyramid) {
+void printMap(struct Pyramid * pyramid) {
     int n = pyramid->n;
-    int l = 0, k = 0, j = 0, i = 0;
+    int l = 0, k = 0, j = 0;
     while (n-2*l>0) {
         putchar(pyramid->mapOfPyramid[l][k+l][j+l]);
         ++j;
@@ -70,7 +70,6 @@ int printMap(struct Pyramid * pyramid) {
             putchar('\n');
         }
         else putchar(' ');
-        ++i;
     }
-    return i;
+    return ;
 }

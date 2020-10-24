@@ -7,6 +7,6 @@ struct Pyramid {
 };
 
 void readData(struct Pyramid *, FILE *);
-int printMap(struct Pyramid *);
+void printMap(struct Pyramid *);
 
 #endif // PYRAMID_H_INCLUDED

@@ -17,6 +17,6 @@ int main(int argc, char ** argv) {
 
         readData(&pyramid, fp);
         fclose(fp);
-        int nodes = printMap(&pyramid);
+        printMap(&pyramid);
     }
 }
