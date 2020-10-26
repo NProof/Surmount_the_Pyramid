@@ -295,8 +295,9 @@ struct Path * shortestPathRange(struct Maze * maze, int s, int f, int * ptr_n) {
         p = peek(&pq);
         pop(&pq);
         if (p->len > l+5)
-            break;
-        ++n;
+            continue;
+        if (p->node->index == f)
+            ++n;
         struct listNode * outNodes = p->node->outAdj;
         while (outNodes != NULL) {
             struct Node * toNode = outNodes->node;
