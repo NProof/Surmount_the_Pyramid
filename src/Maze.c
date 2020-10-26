@@ -151,6 +151,22 @@ void printMaze(struct Maze * maze) {
     return ;
 }
 
+addContain(struct containerLN ** barr, struct listNode * path) {
+    struct containerLN * tmp = *barr;
+    *barr = (struct containerLN *)malloc(sizeof(struct containerLN));
+    (*barr)->obj = path;
+    (*barr)->pre = tmp;
+}
+
+clearContain(struct containerLN ** barr) {
+    while ((*barr) != NULL) {
+        struct containerLN * tmp = (*barr);
+        *barr = tmp->pre;
+        free(tmp->obj);
+        free(tmp);
+    }
+}
+
 int findS(struct Maze * maze) {
     for(int i=0; i<maze->nodes; ++i) {
         if (maze->arrNodes[i].type == "S")
@@ -166,5 +182,15 @@ int findF(struct Maze * maze) {
 }
 
 struct listNode * shortestPath(struct Maze * maze, int s, int f) {
+    struct containerLN * barr = NULL;
+    struct listNode * path = constructorListNode(&maze->arrNodes[s], NULL);
+    addContain(&barr, path);
+    PQnode * pq = newNode(path, 0);
+    while (! isEmpty(&pq)) {
+        struct listNode * crrentpath = peek(&pq);
+        pop(&pq);
+    }
+    free(pq);
+    clearContain(&barr);
     return NULL;
 }

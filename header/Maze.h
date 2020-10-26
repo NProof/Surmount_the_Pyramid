@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "Pyramid.h"
+#include "PriorityQueue.h"
 
 struct Node {
     int index;
@@ -31,6 +32,14 @@ struct Maze * constructorMaze(struct Pyramid *);
 void printMaze(struct Maze *);
 
 void destroyMaze(struct Maze *);
+
+struct containerLN {
+    struct listNode * obj;
+    struct containerLN * pre;
+};
+
+addContain(struct containerLN ** barr, struct listNode * path);
+clearContain(struct containerLN ** barr);
 
 int findS(struct Maze *);
 int findF(struct Maze *);
