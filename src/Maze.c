@@ -255,8 +255,6 @@ struct Path * shortestPathRange(struct Maze * maze, int s, int f, int * ptr_n) {
     while (! isEmpty(&pq)) {
         p = peek(&pq);
         pop(&pq);
-        if (p->node->index == f)
-            break;
         struct listNode * outNodes = p->node->outAdj;
         while (outNodes != NULL) {
             struct Node * toNode = outNodes->node;
@@ -275,6 +273,8 @@ struct Path * shortestPathRange(struct Maze * maze, int s, int f, int * ptr_n) {
             push(&pq, nPath, nPath->len);
             outNodes = outNodes->next;
         }
+        if (p->node->index == f)
+            break;
     }
 
     int l = p->len;
@@ -295,7 +295,7 @@ struct Path * shortestPathRange(struct Maze * maze, int s, int f, int * ptr_n) {
         p = peek(&pq);
         pop(&pq);
         if (p->len > l+5)
-            continue;
+            break;
         if (p->node->index == f)
             ++n;
         struct listNode * outNodes = p->node->outAdj;
