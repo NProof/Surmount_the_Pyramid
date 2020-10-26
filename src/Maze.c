@@ -192,7 +192,7 @@ struct listNode * shortestPath(struct Maze * maze, int s, int f) {
     struct containerLN * barr = NULL;
     path * p = newPath(0, &maze->arrNodes[s], NULL);
     addContain(&barr, p);
-    PQnode * pq = newNode(p, 0);
+    PQnode * pq = newNode(p, p->len);
     while (! isEmpty(&pq)) {
         p = peek(&pq);
         pop(&pq);
