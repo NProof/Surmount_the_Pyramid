@@ -3,6 +3,7 @@
 
 struct Pyramid {
     int n;
+    int nodes;
     char mapOfPyramid[15][15][15];
 };
 

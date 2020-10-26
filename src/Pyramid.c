@@ -23,6 +23,7 @@ void readData(struct Pyramid * pyramid, FILE * fp) {
         }
     }
     pyramid->n = i;
+    pyramid->nodes = i;
     if (pyramid->n==0)
         exit(EXIT_FAILURE);
     i = 0;
@@ -46,6 +47,7 @@ void readData(struct Pyramid * pyramid, FILE * fp) {
                     ++level;
                 }
             }
+            ++pyramid->nodes;
         }
     }
     return ;
