@@ -1,6 +1,3 @@
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
 #include "../header/Pyramid.h"
 
 void readData(struct Pyramid * pyramid, FILE * fp) {
