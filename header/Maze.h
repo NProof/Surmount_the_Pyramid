@@ -4,4 +4,20 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "../header/Pyramid.h"
+
+struct Node {
+    char type;
+};
+
+struct Maze {
+    int n;
+    int nodes;
+    struct Node * arrNodes;
+};
+
+struct Maze * constructorMaze(struct Pyramid *);
+
+void printMaze(struct Maze *);
+
 #endif // MAZE_H_INCLUDED
