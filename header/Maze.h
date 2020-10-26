@@ -52,6 +52,6 @@ void clearContain(struct containerLN ** barr);
 int findS(struct Maze *);
 int findF(struct Maze *);
 
-struct listNode * shortestPath(struct Maze *, int, int);
+struct Path * shortestPath(struct Maze *, int, int);
 
 #endif // MAZE_H_INCLUDED

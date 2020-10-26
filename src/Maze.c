@@ -190,7 +190,7 @@ int findF(struct Maze * maze) {
     return -1;
 }
 
-struct listNode * shortestPath(struct Maze * maze, int s, int f) {
+struct Path * shortestPath(struct Maze * maze, int s, int f) {
     struct containerLN * barr = NULL;
     struct Path * p = newPath(0, &maze->arrNodes[s], NULL);
     addContain(&barr, p);
@@ -209,8 +209,35 @@ struct listNode * shortestPath(struct Maze * maze, int s, int f) {
             outNodes = outNodes->next;
         }
     }
+
+    struct Path * path = NULL;
+    struct Path * tmp = path;
+    struct Node * node;
+    while (p != NULL) {
+        tmp = path;
+        path = (struct Path *)malloc(sizeof(struct Path));
+        path->link = tmp;
+        path->node = p->node;
+        p = p->link;
+    }
+
+    struct Path * cur = path;
+    int l = 0;
+    cur->len = l;
+    cur = cur->link;
+    while (cur != NULL) {
+        struct Node * node = cur->node;
+        if(node->type == 'T')
+            l += 3;
+        else
+            ++l;
+        cur->len = l;
+        cur = cur->link;
+    }
+
+
     while (! isEmpty(&pq)) pop(&pq);
     free(pq);
     clearContain(&barr);
-    return NULL;
+    return path;
 }

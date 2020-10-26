@@ -27,6 +27,17 @@ int main(int argc, char ** argv) {
         int s = findS(maze);
         int f = findF(maze);
         struct listNode * path = shortestPath(maze, s, f);
+//
+        if(path != NULL) {
+            struct Path * cur = path;
+            printf("%d", cur->node->index);
+            while (cur->link != NULL) {
+                cur = cur->link;
+                printf(" -> %d", cur->node->index);
+            }
+            printf(" $\n");
+        }
+        else printf("No Way to F\n");
 
         printMaze(maze);
         destroyMaze(maze);
