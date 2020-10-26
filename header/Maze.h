@@ -33,12 +33,20 @@ void printMaze(struct Maze *);
 
 void destroyMaze(struct Maze *);
 
+typedef struct Path {
+    int len;
+    struct Node * node;
+    struct Path * link;
+} path;
+
+path * newPath(int l, struct Node * node, struct Path * link);
+
 struct containerLN {
     struct listNode * obj;
-    struct containerLN * pre;
+    path * pre;
 };
 
-addContain(struct containerLN ** barr, struct listNode * path);
+addContain(struct containerLN ** barr, path * p);
 clearContain(struct containerLN ** barr);
 
 int findS(struct Maze *);
