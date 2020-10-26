@@ -7,6 +7,7 @@
 #include "../header/Pyramid.h"
 
 struct Node {
+    int index;
     char type;
     struct listNode * inAdj;
     struct listNode * outAdj;

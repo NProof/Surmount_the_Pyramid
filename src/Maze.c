@@ -47,6 +47,7 @@ struct Maze * constructorMaze(struct Pyramid * pmd) {
     for(int i=0; i<maze->nodes; ++i) {
         int j = -1, k = -1, l = -1;
         linearToPmd(i, maze->n, &j, &k, &l);
+        maze->arrNodes[i].index = i;
         maze->arrNodes[i].type = pmd->mapOfPyramid[l][k][j];
         maze->arrNodes[i].inAdj = NULL;
         maze->arrNodes[i].outAdj = NULL;
