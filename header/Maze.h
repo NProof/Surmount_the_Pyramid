@@ -20,4 +20,6 @@ struct Maze * constructorMaze(struct Pyramid *);
 
 void printMaze(struct Maze *);
 
+void destroyMaze(struct Maze *);
+
 #endif // MAZE_H_INCLUDED
