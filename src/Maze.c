@@ -221,20 +221,19 @@ struct Path * shortestPath(struct Maze * maze, int s, int f) {
         p = p->link;
     }
 
-    struct Path * cur = path;
-    int l = 0;
-    cur->len = l;
-    cur = cur->link;
-    while (cur != NULL) {
-        struct Node * node = cur->node;
-        if(node->type == 'T')
-            l += 3;
-        else
-            ++l;
-        cur->len = l;
-        cur = cur->link;
-    }
-
+//    struct Path * cur = path;
+//    int l = 0;
+//    cur->len = l;
+//    cur = cur->link;
+//    while (cur != NULL) {
+//        struct Node * node = cur->node;
+//        if(node->type == 'T')
+//            l += 3;
+//        else
+//            ++l;
+//        cur->len = l;
+//        cur = cur->link;
+//    }
 
     while (! isEmpty(&pq)) pop(&pq);
     free(pq);
