@@ -32,4 +32,7 @@ void printMaze(struct Maze *);
 
 void destroyMaze(struct Maze *);
 
+int findS(struct Maze *);
+int findF(struct Maze *);
+
 #endif // MAZE_H_INCLUDED

@@ -150,3 +150,17 @@ void printMaze(struct Maze * maze) {
     }
     return ;
 }
+
+int findS(struct Maze * maze) {
+    for(int i=0; i<maze->nodes; ++i) {
+        if (maze->arrNodes[i].type == "S")
+            return i;
+    }
+}
+
+int findF(struct Maze * maze) {
+    for(int i=0; i<maze->nodes; ++i) {
+        if (maze->arrNodes[i].type == "F")
+            return i;
+    }
+}
