@@ -151,8 +151,8 @@ void printMaze(struct Maze * maze) {
     return ;
 }
 
-path * newPath(int l, struct Node * node, struct Path * link) {
-    path * p = (struct Path *)malloc(sizeof(struct Path));
+struct Path * newPath(int l, struct Node * node, struct Path * link) {
+    struct Path * p = (struct Path *)malloc(sizeof(struct Path));
     p->len = l;
     p->node = node;
     p->link = link;
@@ -192,18 +192,24 @@ int findF(struct Maze * maze) {
 
 struct listNode * shortestPath(struct Maze * maze, int s, int f) {
     struct containerLN * barr = NULL;
-    path * p = newPath(0, &maze->arrNodes[s], NULL);
+    struct Path * p = newPath(0, &maze->arrNodes[s], NULL);
     addContain(&barr, p);
-//    PQnode * pq = newNode(p, p->len);
-//    while (! isEmpty(&pq)) {
-//        p = peek(&pq);
-//        pop(&pq);
-//        if (p->node->index == f)
-//            break;
-//
-//    }
-//    while (! isEmpty(&pq)) pop(&pq);
-//    free(pq);
+    PQnode * pq = newNode(p, p->len);
+    while (! isEmpty(&pq)) {
+        printf("this\n");
+        p = peek(&pq);
+        pop(&pq);
+        if (p->node->index == f)
+            break;
+//        struct listNode * outNodes = p->node->outAdj;
+//        printf("char : %c\n", outNodes->node->type);
+//        while (outNodes != NULL) {
+//            printf("char : %c\n", outNodes->node->type);
+//            outNodes = outNodes->next;
+//        }
+    }
+    while (! isEmpty(&pq)) pop(&pq);
+    free(pq);
     clearContain(&barr);
     return NULL;
 }

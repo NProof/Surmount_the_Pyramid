@@ -33,13 +33,13 @@ void printMaze(struct Maze *);
 
 void destroyMaze(struct Maze *);
 
-typedef struct Path {
+struct Path {
     int len;
     struct Node * node;
     struct Path * link;
-} path;
+} ;
 
-path * newPath(int l, struct Node * node, struct Path * link);
+struct Path * newPath(int l, struct Node * node, struct Path * link);
 
 struct containerLN {
     struct Path * obj;
