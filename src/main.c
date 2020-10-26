@@ -23,6 +23,11 @@ int main(int argc, char ** argv) {
         fclose(fp);
 
         struct Maze * maze = constructorMaze(&pyramid);
+
+        int s = findS(maze);
+        int f = findF(maze);
+        struct listNode * path = shortestPath(maze, s, f);
+
         printMaze(maze);
         destroyMaze(maze);
     }

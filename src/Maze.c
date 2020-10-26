@@ -164,3 +164,7 @@ int findF(struct Maze * maze) {
             return i;
     }
 }
+
+struct listNode * shortestPath(struct Maze * maze, int s, int f) {
+    return NULL;
+}

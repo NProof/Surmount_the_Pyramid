@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "../header/Pyramid.h"
+#include "Pyramid.h"
 
 struct Node {
     int index;
@@ -34,5 +34,7 @@ void destroyMaze(struct Maze *);
 
 int findS(struct Maze *);
 int findF(struct Maze *);
+
+struct listNode * shortestPath(struct Maze *, int, int);
 
 #endif // MAZE_H_INCLUDED
