@@ -10,7 +10,7 @@ void push(PQnode ** head, struct Path * d, int p) {
     // Special Case: The head of list has lesser
     // priority than new node. So insert new
     // node before head node and change head node.
-    if ((*head)->priority > p) {
+    if (isEmpty(head) || (*head)->priority > p) {
 
         // Insert New PQnode before head
         temp->next = *head;

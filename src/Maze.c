@@ -196,17 +196,18 @@ struct listNode * shortestPath(struct Maze * maze, int s, int f) {
     addContain(&barr, p);
     PQnode * pq = newNode(p, p->len);
     while (! isEmpty(&pq)) {
-        printf("this\n");
         p = peek(&pq);
         pop(&pq);
         if (p->node->index == f)
             break;
-//        struct listNode * outNodes = p->node->outAdj;
-//        printf("char : %c\n", outNodes->node->type);
-//        while (outNodes != NULL) {
-//            printf("char : %c\n", outNodes->node->type);
-//            outNodes = outNodes->next;
-//        }
+        struct listNode * outNodes = p->node->outAdj;
+        while (outNodes != NULL) {
+            struct Node * node = outNodes->node;
+            struct Path * nPath = newPath(p->len + (node->type == 'T' ? 3 : 1), node, p);
+            addContain(&barr, nPath);
+            push(&pq, nPath, nPath->len);
+            outNodes = outNodes->next;
+        }
     }
     while (! isEmpty(&pq)) pop(&pq);
     free(pq);
