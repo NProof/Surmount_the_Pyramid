@@ -176,7 +176,7 @@ void clearContain(struct containerLN ** barr) {
 
 int findS(struct Maze * maze) {
     for(int i=0; i<maze->nodes; ++i) {
-        if (maze->arrNodes[i].type == "S")
+        if (maze->arrNodes[i].type == 'S')
             return i;
     }
     return -1;
@@ -184,7 +184,7 @@ int findS(struct Maze * maze) {
 
 int findF(struct Maze * maze) {
     for(int i=0; i<maze->nodes; ++i) {
-        if (maze->arrNodes[i].type == "F")
+        if (maze->arrNodes[i].type == 'F')
             return i;
     }
     return -1;
