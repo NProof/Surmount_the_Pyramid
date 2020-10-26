@@ -22,7 +22,6 @@ int main(int argc, char ** argv) {
         readData(&pyramid, fp);
         fclose(fp);
 
-//        printMap(&pyramid);
         struct Maze * maze = constructorMaze(&pyramid);
         printMaze(maze);
     }
