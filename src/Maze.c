@@ -158,14 +158,14 @@ path * newPath(int l, struct Node * node, struct Path * link) {
     p->link = link;
 }
 
-addContain(struct containerLN ** barr, path * p) {
+void addContain(struct containerLN ** barr, struct Path * p) {
     struct containerLN * tmp = *barr;
     *barr = (struct containerLN *)malloc(sizeof(struct containerLN));
     (*barr)->obj = p;
     (*barr)->pre = tmp;
 }
 
-clearContain(struct containerLN ** barr) {
+void clearContain(struct containerLN ** barr) {
     while ((*barr) != NULL) {
         struct containerLN * tmp = (*barr);
         *barr = tmp->pre;
@@ -179,6 +179,7 @@ int findS(struct Maze * maze) {
         if (maze->arrNodes[i].type == "S")
             return i;
     }
+    return -1;
 }
 
 int findF(struct Maze * maze) {
@@ -186,22 +187,23 @@ int findF(struct Maze * maze) {
         if (maze->arrNodes[i].type == "F")
             return i;
     }
+    return -1;
 }
 
 struct listNode * shortestPath(struct Maze * maze, int s, int f) {
     struct containerLN * barr = NULL;
     path * p = newPath(0, &maze->arrNodes[s], NULL);
     addContain(&barr, p);
-    PQnode * pq = newNode(p, p->len);
-    while (! isEmpty(&pq)) {
-        p = peek(&pq);
-        pop(&pq);
-        if (p->node->index == f)
-            break;
-
-    }
-    while (! isEmpty(&pq)) pop(&pq);
-    free(pq);
+//    PQnode * pq = newNode(p, p->len);
+//    while (! isEmpty(&pq)) {
+//        p = peek(&pq);
+//        pop(&pq);
+//        if (p->node->index == f)
+//            break;
+//
+//    }
+//    while (! isEmpty(&pq)) pop(&pq);
+//    free(pq);
     clearContain(&barr);
     return NULL;
 }

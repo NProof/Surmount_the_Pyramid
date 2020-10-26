@@ -1,7 +1,7 @@
 #include "../header/PriorityQueue.h"
 #include "../header/Maze.h"
 
-void push(PQnode ** head, struct listNode * d, int p) {
+void push(PQnode ** head, struct Path * d, int p) {
     PQnode* start = (*head);
 
     // Create new PQnode
@@ -32,7 +32,7 @@ void push(PQnode ** head, struct listNode * d, int p) {
     }
 }
 
-PQnode * newNode(struct listNode * d, int p)
+PQnode * newNode(struct Path * d, int p)
 {
     PQnode * temp = (PQnode *)malloc(sizeof(PQnode));
     temp->data = d;
@@ -42,7 +42,7 @@ PQnode * newNode(struct listNode * d, int p)
     return temp;
 }
 
-struct listNode * peek(PQnode ** head) {
+struct Path * peek(PQnode ** head) {
     return (*head)->data;
 }
 

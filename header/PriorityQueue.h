@@ -5,15 +5,15 @@
 
 typedef struct PriorityQueueNode {
     int priority;
-    struct listNode * data;
+    struct Path * data;
     struct PriorityQueueNode * next;
 } PQnode;
 
-void push(PQnode **, struct listNode *, int);
+void push(PQnode **, struct Path *, int);
 
-PQnode * newNode(struct listNode * d, int p);
+PQnode * newNode(struct Path * d, int p);
 
-struct listNode * peek(PQnode **);
+struct Path * peek(PQnode **);
 
 void pop(PQnode **);
 

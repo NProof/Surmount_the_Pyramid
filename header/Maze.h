@@ -42,12 +42,12 @@ typedef struct Path {
 path * newPath(int l, struct Node * node, struct Path * link);
 
 struct containerLN {
-    struct listNode * obj;
-    path * pre;
+    struct Path * obj;
+    struct containerLN * pre;
 };
 
-addContain(struct containerLN ** barr, path * p);
-clearContain(struct containerLN ** barr);
+void addContain(struct containerLN ** barr, struct Path * p);
+void clearContain(struct containerLN ** barr);
 
 int findS(struct Maze *);
 int findF(struct Maze *);
