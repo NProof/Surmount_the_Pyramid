@@ -4,34 +4,96 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "../header/Pyramid.h"
-#include "../header/Maze.h"
+char mapOfPyramid[15][15][15]={0};
+
+int readData(char *);
+int printMap(int);
 
 int main(int argc, char ** argv) {
-    FILE * fp;
-    struct Pyramid pyramid;
     for (int i=1; i<argc; ++i) {
-        fp = fopen(argv[i], "r");
-        if (fp == NULL) {
-            fprintf(stderr, "file open error\n");
-            exit(EXIT_FAILURE);
-        }
-
-        printf("=== %s ===\n", argv[i]);
-
-        readData(&pyramid, fp);
-        fclose(fp);
-
-        struct Maze * maze = constructorMaze(&pyramid);
-
-        int s = findS(maze);
-        int f = findF(maze);
-        struct Path * path = shortestPath(maze, s, f);
-
-        colorMaze(maze, path);
-        printf("Path length : %d\n\n", path->len);
-        printMaze(maze);
-
-        destroyMaze(maze);
+        printf("======\n%s\n\n", argv[i]);
+        int n = readData(argv[i]);
+        int nodes = printMap(n);
     }
+}
+
+int printMap(int n) {
+    int l = 0, k = 0, j = 0;
+    int i = 0;
+    while (n-2*l>0) {
+        putchar(mapOfPyramid[l][k+l][j+l]);
+        ++j;
+        if (j>=n-2*l) {
+            j = 0;
+            ++k;
+            if (k>=n-2*l) {
+                k = 0;
+                ++l;
+                if(n-2*l>0)
+                    putchar('\n');
+            }
+            putchar('\n');
+        }
+        else putchar(' ');
+        ++i;
+    }
+    return i;
+}
+
+int readData(char * fileName) {
+    FILE * fp;
+    char line[256];
+
+    fp = fopen(fileName, "r");
+    if (fp == NULL) {
+        fprintf(stderr, "file open error\n");
+        exit(EXIT_FAILURE);
+    }
+
+    int level = 0;
+    int j = 0;
+    int i = 0;
+    int n = 0;
+
+    if (fgets(line, sizeof(line), fp)!=NULL) {
+        char linetmp[50];
+        strcpy(linetmp, line);
+        char * token = strtok(linetmp, " \t\n");
+        char tmp[15]={'\0'};
+        while(token != NULL) {
+            strcpy(tmp+i, token);
+            mapOfPyramid[level][j+level][i+level] = tmp[i];
+            token = strtok(NULL, " \t\n");
+            ++i;
+        }
+    }
+    n = i;
+    if (n==0)
+        exit(EXIT_FAILURE);
+    i = 0;
+    ++j;
+    while (fgets(line, sizeof(line), fp)!=NULL) {
+        char linetmp[50];
+        strcpy(linetmp, line);
+        char * token = strtok(linetmp, " \t\n");
+        char tmp[15]={'\0'};
+        while(token != NULL) {
+//            printf("%d, %d, %d)\n", level, j, i);
+            strcpy(tmp+i, token);
+            mapOfPyramid[level][j+level][i+level] = tmp[i];
+            token = strtok(NULL, " \t\n");
+            ++i;
+            if (i>=n-2*level) {
+                i = 0;
+                ++j;
+                if (j>=n-2*level) {
+                    j = 0;
+                    ++level;
+                }
+            }
+        }
+    }
+
+    fclose(fp);
+    return n;
 }

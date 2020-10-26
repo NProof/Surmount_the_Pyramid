@@ -54,4 +54,3 @@ dkms.conf
 # Project Managemant
 *.cbp
 *.depend
-*.layout
