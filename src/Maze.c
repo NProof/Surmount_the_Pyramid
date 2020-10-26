@@ -32,6 +32,13 @@ bool pmdToLinear(int *i, int n, int j, int k, int l) {
     return true;
 }
 
+struct listNode * constructorListNode(struct Node * node, struct listNode * list) {
+    struct listNode * ptrObj = (struct listNode *)malloc(sizeof(struct listNode));
+    ptrObj->node = node;
+    ptrObj->next = list;
+    return ptrObj;
+}
+
 struct Maze * constructorMaze(struct Pyramid * pmd) {
     struct Maze * maze = (struct Maze *)malloc(sizeof(struct Maze));
     maze->n = pmd->n;
@@ -41,11 +48,84 @@ struct Maze * constructorMaze(struct Pyramid * pmd) {
         int j = -1, k = -1, l = -1;
         linearToPmd(i, maze->n, &j, &k, &l);
         maze->arrNodes[i].type = pmd->mapOfPyramid[l][k][j];
+        maze->arrNodes[i].inAdj = NULL;
+        maze->arrNodes[i].outAdj = NULL;
+    }
+    for(int i=0; i<maze->nodes; ++i) {
+        char type = maze->arrNodes[i].type;
+        int j, k ,l;
+        linearToPmd(i, maze->n, &j, &k, &l);
+        if (type != 'X') {
+            int toI;
+            if (pmdToLinear(&toI, maze->n, j, k + 1, l)) {
+                struct listNode * crrIn = maze->arrNodes[toI].inAdj;
+                struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
+                maze->arrNodes[toI].inAdj = newList;
+                struct listNode * crrOut = maze->arrNodes[i].outAdj;
+                newList = constructorListNode(&maze->arrNodes[toI], crrOut);
+                maze->arrNodes[i].outAdj = newList;
+            }
+            if (pmdToLinear(&toI, maze->n, j, k - 1, l)) {
+                struct listNode * crrIn = maze->arrNodes[toI].inAdj;
+                struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
+                maze->arrNodes[toI].inAdj = newList;
+                struct listNode * crrOut = maze->arrNodes[i].outAdj;
+                newList = constructorListNode(&maze->arrNodes[toI], crrOut);
+                maze->arrNodes[i].outAdj = newList;
+            }
+            if (pmdToLinear(&toI, maze->n, j + 1, k, l)) {
+                struct listNode * crrIn = maze->arrNodes[toI].inAdj;
+                struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
+                maze->arrNodes[toI].inAdj = newList;
+                struct listNode * crrOut = maze->arrNodes[i].outAdj;
+                newList = constructorListNode(&maze->arrNodes[toI], crrOut);
+                maze->arrNodes[i].outAdj = newList;
+            }
+            if (pmdToLinear(&toI, maze->n, j - 1, k, l)) {
+                struct listNode * crrIn = maze->arrNodes[toI].inAdj;
+                struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
+                maze->arrNodes[toI].inAdj = newList;
+                struct listNode * crrOut = maze->arrNodes[i].outAdj;
+                newList = constructorListNode(&maze->arrNodes[toI], crrOut);
+                maze->arrNodes[i].outAdj = newList;
+            }
+            if ( (type == 'U' || type == 'P') && pmdToLinear(&toI, maze->n, j, k, l + 1)) {
+                struct listNode * crrIn = maze->arrNodes[toI].inAdj;
+                struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
+                maze->arrNodes[toI].inAdj = newList;
+                struct listNode * crrOut = maze->arrNodes[i].outAdj;
+                newList = constructorListNode(&maze->arrNodes[toI], crrOut);
+                maze->arrNodes[i].outAdj = newList;
+            }
+
+            if ((type == 'D' || type == 'P') && pmdToLinear(&toI, maze->n, j, k, l - 1)) {
+                struct listNode * crrIn = maze->arrNodes[toI].inAdj;
+                struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
+                maze->arrNodes[toI].inAdj = newList;
+                struct listNode * crrOut = maze->arrNodes[i].outAdj;
+                newList = constructorListNode(&maze->arrNodes[toI], crrOut);
+                maze->arrNodes[i].outAdj = newList;
+            }
+        }
     }
     return maze;
 }
 
 void destroyMaze(struct Maze * maze) {
+    for(int i=0; i<maze->nodes; ++i) {
+        struct listNode * crrIn = maze->arrNodes[i].inAdj;
+        while (crrIn != NULL) {
+            struct listNode * tmp = crrIn;
+            crrIn = crrIn->next;
+            free(tmp);
+        }
+        struct listNode * crrOut = maze->arrNodes[i].outAdj;
+        while (crrOut != NULL) {
+            struct listNode * tmp = crrOut;
+            crrOut = crrOut->next;
+            free(tmp);
+        }
+    }
     free(maze->arrNodes);
     free(maze);
 }

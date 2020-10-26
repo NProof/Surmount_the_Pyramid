@@ -8,6 +8,13 @@
 
 struct Node {
     char type;
+    struct listNode * inAdj;
+    struct listNode * outAdj;
+};
+
+struct listNode {
+    struct Node * node;
+    struct listNode * next;
 };
 
 struct Maze {
@@ -15,6 +22,8 @@ struct Maze {
     int nodes;
     struct Node * arrNodes;
 };
+
+struct listNode * constructorListNode(struct Node *, struct listNode *);
 
 struct Maze * constructorMaze(struct Pyramid *);
 
