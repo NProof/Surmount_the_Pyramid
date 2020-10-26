@@ -58,7 +58,7 @@ struct Maze * constructorMaze(struct Pyramid * pmd) {
         linearToPmd(i, maze->n, &j, &k, &l);
         if (type != 'X') {
             int toI;
-            if (pmdToLinear(&toI, maze->n, j, k + 1, l)) {
+            if (pmdToLinear(&toI, maze->n, j, k + 1, l) && maze->arrNodes[toI].type != 'X') {
                 struct listNode * crrIn = maze->arrNodes[toI].inAdj;
                 struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
                 maze->arrNodes[toI].inAdj = newList;
@@ -66,7 +66,7 @@ struct Maze * constructorMaze(struct Pyramid * pmd) {
                 newList = constructorListNode(&maze->arrNodes[toI], crrOut);
                 maze->arrNodes[i].outAdj = newList;
             }
-            if (pmdToLinear(&toI, maze->n, j, k - 1, l)) {
+            if (pmdToLinear(&toI, maze->n, j, k - 1, l) && maze->arrNodes[toI].type != 'X') {
                 struct listNode * crrIn = maze->arrNodes[toI].inAdj;
                 struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
                 maze->arrNodes[toI].inAdj = newList;
@@ -74,7 +74,7 @@ struct Maze * constructorMaze(struct Pyramid * pmd) {
                 newList = constructorListNode(&maze->arrNodes[toI], crrOut);
                 maze->arrNodes[i].outAdj = newList;
             }
-            if (pmdToLinear(&toI, maze->n, j + 1, k, l)) {
+            if (pmdToLinear(&toI, maze->n, j + 1, k, l) && maze->arrNodes[toI].type != 'X') {
                 struct listNode * crrIn = maze->arrNodes[toI].inAdj;
                 struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
                 maze->arrNodes[toI].inAdj = newList;
@@ -82,7 +82,7 @@ struct Maze * constructorMaze(struct Pyramid * pmd) {
                 newList = constructorListNode(&maze->arrNodes[toI], crrOut);
                 maze->arrNodes[i].outAdj = newList;
             }
-            if (pmdToLinear(&toI, maze->n, j - 1, k, l)) {
+            if (pmdToLinear(&toI, maze->n, j - 1, k, l) && maze->arrNodes[toI].type != 'X') {
                 struct listNode * crrIn = maze->arrNodes[toI].inAdj;
                 struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
                 maze->arrNodes[toI].inAdj = newList;
@@ -90,21 +90,27 @@ struct Maze * constructorMaze(struct Pyramid * pmd) {
                 newList = constructorListNode(&maze->arrNodes[toI], crrOut);
                 maze->arrNodes[i].outAdj = newList;
             }
-            if ( (type == 'U' || type == 'P') && pmdToLinear(&toI, maze->n, j, k, l + 1)) {
-                struct listNode * crrIn = maze->arrNodes[toI].inAdj;
-                struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
-                maze->arrNodes[toI].inAdj = newList;
+            if ( (type == 'U' || type == 'P') && pmdToLinear(&toI, maze->n, j, k, l + 1)
+                && maze->arrNodes[toI].type != 'X') {
+                if(maze->arrNodes[toI].type == 'D') {
+                    struct listNode * crrIn = maze->arrNodes[toI].inAdj;
+                    struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
+                    maze->arrNodes[toI].inAdj = newList;
+                }
                 struct listNode * crrOut = maze->arrNodes[i].outAdj;
-                newList = constructorListNode(&maze->arrNodes[toI], crrOut);
+                struct listNode *newList = constructorListNode(&maze->arrNodes[toI], crrOut);
                 maze->arrNodes[i].outAdj = newList;
             }
 
-            if ((type == 'D' || type == 'P') && pmdToLinear(&toI, maze->n, j, k, l - 1)) {
-                struct listNode * crrIn = maze->arrNodes[toI].inAdj;
-                struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
-                maze->arrNodes[toI].inAdj = newList;
+            if ((type == 'D' || type == 'P') && pmdToLinear(&toI, maze->n, j, k, l - 1)
+                && maze->arrNodes[toI].type != 'X') {
+                if(maze->arrNodes[toI].type == 'U') {
+                    struct listNode * crrIn = maze->arrNodes[toI].inAdj;
+                    struct listNode * newList = constructorListNode(&maze->arrNodes[i], crrIn);
+                    maze->arrNodes[toI].inAdj = newList;
+                }
                 struct listNode * crrOut = maze->arrNodes[i].outAdj;
-                newList = constructorListNode(&maze->arrNodes[toI], crrOut);
+                struct listNode *newList = constructorListNode(&maze->arrNodes[toI], crrOut);
                 maze->arrNodes[i].outAdj = newList;
             }
         }
@@ -202,8 +208,18 @@ struct Path * shortestPath(struct Maze * maze, int s, int f) {
             break;
         struct listNode * outNodes = p->node->outAdj;
         while (outNodes != NULL) {
-            struct Node * node = outNodes->node;
-            struct Path * nPath = newPath(p->len + (node->type == 'T' ? 3 : 1), node, p);
+            struct Node * toNode = outNodes->node;
+            bool cyclic = false;
+            struct Path * backpath = p;
+            while (backpath != NULL) {
+                if(toNode == backpath->node) cyclic = true;
+                backpath = backpath->link;
+            }
+            if(cyclic) {
+                outNodes = outNodes->next;
+                continue;
+            }
+            struct Path * nPath = newPath(p->len + (toNode->type == 'T' ? 3 : 1), toNode, p);
             addContain(&barr, nPath);
             push(&pq, nPath, nPath->len);
             outNodes = outNodes->next;
@@ -224,19 +240,83 @@ struct Path * shortestPath(struct Maze * maze, int s, int f) {
     }
     path->len = l;
 
-//    struct Path * cur = path;
-//    int l = 0;
-//    cur->len = l;
-//    cur = cur->link;
-//    while (cur != NULL) {
-//        struct Node * node = cur->node;
-//        if(node->type == 'T')
-//            l += 3;
-//        else
-//            ++l;
-//        cur->len = l;
-//        cur = cur->link;
-//    }
+    while (! isEmpty(&pq)) pop(&pq);
+    free(pq);
+    clearContain(&barr);
+    return path;
+}
+
+struct Path * shortestPathRange(struct Maze * maze, int s, int f, int * ptr_n) {
+    int n = 0;
+    struct containerLN * barr = NULL;
+    struct Path * p = newPath(0, &maze->arrNodes[s], NULL);
+    addContain(&barr, p);
+    PQnode * pq = newNode(p, p->len);
+    while (! isEmpty(&pq)) {
+        p = peek(&pq);
+        pop(&pq);
+        if (p->node->index == f)
+            break;
+        struct listNode * outNodes = p->node->outAdj;
+        while (outNodes != NULL) {
+            struct Node * toNode = outNodes->node;
+            bool cyclic = false;
+            struct Path * backpath = p;
+            while (backpath != NULL) {
+                if(toNode == backpath->node) cyclic = true;
+                backpath = backpath->link;
+            }
+            if(cyclic) {
+                outNodes = outNodes->next;
+                continue;
+            }
+            struct Path * nPath = newPath(p->len + (toNode->type == 'T' ? 3 : 1), toNode, p);
+            addContain(&barr, nPath);
+            push(&pq, nPath, nPath->len);
+            outNodes = outNodes->next;
+        }
+    }
+
+    int l = p->len;
+    struct Path * path = NULL;
+    struct Path * tmp = path;
+    struct Node * node;
+    while (p != NULL) {
+        tmp = path;
+        path = (struct Path *)malloc(sizeof(struct Path));
+        path->link = tmp;
+        path->node = p->node;
+        p = p->link;
+    }
+    path->len = l;
+
+    n = 1;
+    while (! isEmpty(&pq)) {
+        p = peek(&pq);
+        pop(&pq);
+        if (p->len > l+5)
+            break;
+        ++n;
+        struct listNode * outNodes = p->node->outAdj;
+        while (outNodes != NULL) {
+            struct Node * toNode = outNodes->node;
+            bool cyclic = false;
+            struct Path * backpath = p;
+            while (backpath != NULL) {
+                if(toNode == backpath->node) cyclic = true;
+                backpath = backpath->link;
+            }
+            if(cyclic) {
+                outNodes = outNodes->next;
+                continue;
+            }
+            struct Path * nPath = newPath(p->len + (toNode->type == 'T' ? 3 : 1), toNode, p);
+            addContain(&barr, nPath);
+            push(&pq, nPath, nPath->len);
+            outNodes = outNodes->next;
+        }
+    }
+    *ptr_n = n;
 
     while (! isEmpty(&pq)) pop(&pq);
     free(pq);

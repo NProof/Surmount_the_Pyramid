@@ -54,6 +54,8 @@ int findF(struct Maze *);
 
 struct Path * shortestPath(struct Maze *, int, int);
 
+struct Path * shortestPathRange(struct Maze *, int, int, int *);
+
 void colorMaze(struct Maze *, struct Path *);
 
 #endif // MAZE_H_INCLUDED

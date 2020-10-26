@@ -26,11 +26,13 @@ int main(int argc, char ** argv) {
 
         int s = findS(maze);
         int f = findF(maze);
-        struct Path * path = shortestPath(maze, s, f);
+        int n;
+        struct Path * path = shortestPathRange(maze, s, f, &n);
 
         colorMaze(maze, path);
-        printf("Path length : %d\n\n", path->len);
-        printMaze(maze);
+        printf("Shortest path : %d, Limit : %d, The number of different paths : %d\n\n",
+                path->len, path->len + 5, n);
+//        printMaze(maze);
 
         destroyMaze(maze);
     }
