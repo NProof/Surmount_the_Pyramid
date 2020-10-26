@@ -210,6 +210,7 @@ struct Path * shortestPath(struct Maze * maze, int s, int f) {
         }
     }
 
+    int l = p->len;
     struct Path * path = NULL;
     struct Path * tmp = path;
     struct Node * node;
@@ -218,8 +219,10 @@ struct Path * shortestPath(struct Maze * maze, int s, int f) {
         path = (struct Path *)malloc(sizeof(struct Path));
         path->link = tmp;
         path->node = p->node;
+//        path->len = p->len;
         p = p->link;
     }
+    path->len = l;
 
 //    struct Path * cur = path;
 //    int l = 0;
@@ -239,4 +242,15 @@ struct Path * shortestPath(struct Maze * maze, int s, int f) {
     free(pq);
     clearContain(&barr);
     return path;
+}
+
+void colorMaze(struct Maze * maze, struct Path * path) {
+    if(path != NULL) {
+        struct Path * cur = path;
+        while (cur != NULL) {
+            cur->node->type = '*';
+            cur = cur->link;
+        }
+    }
+    else printf("No path\n");
 }
