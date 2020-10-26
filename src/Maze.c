@@ -187,8 +187,9 @@ struct listNode * shortestPath(struct Maze * maze, int s, int f) {
     addContain(&barr, path);
     PQnode * pq = newNode(path, 0);
     while (! isEmpty(&pq)) {
-        struct listNode * crrentpath = peek(&pq);
+        path = peek(&pq);
         pop(&pq);
+
     }
     free(pq);
     clearContain(&barr);
