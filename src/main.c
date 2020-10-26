@@ -24,5 +24,6 @@ int main(int argc, char ** argv) {
 
         struct Maze * maze = constructorMaze(&pyramid);
         printMaze(maze);
+        destroyMaze(maze);
     }
 }

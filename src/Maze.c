@@ -45,6 +45,11 @@ struct Maze * constructorMaze(struct Pyramid * pmd) {
     return maze;
 }
 
+void destroyMaze(struct Maze * maze) {
+    free(maze->arrNodes);
+    free(maze);
+}
+
 void printMaze(struct Maze * maze) {
     int n = maze->n;
     int i = 0;
